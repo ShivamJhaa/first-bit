@@ -207,18 +207,106 @@ int replaceSum(node *root)
     return temp + root->data;
 }
 
+class HBPair{
+    public:
+    int height;
+    bool balance;
+};
+
+HBPair IsTreeBalance(node *root)
+{
+    HBPair p;
+    if (root==NULL)
+    {
+        p.height=0;
+        p.balance=true;
+        return p;
+    }
+
+    HBPair left=IsTreeBalance(root->left);
+    HBPair right=IsTreeBalance(root->right);
+
+    p.height=max(left.height,right.height)+1;
+
+    if (abs(left.height-right.height)<=1 && left.balance && right.balance)
+    {
+        p.balance=true;
+    }
+    else 
+    {
+        p.balance=false;
+    }
+
+    return p;
+}
+
+node *BuildTreeFromArray(int *a,int s,int e)
+{
+    if (s>e)
+    return NULL;
+
+    int mid=(s+e)/2;
+    node *root=new node(a[mid]);
+
+    root->left=BuildTreeFromArray(a,s,mid-1);
+    root->right=BuildTreeFromArray(a,mid+1,e);
+
+    return root;
+}
+
+node * buildTreefromPreIn(int *in,int*pre,int s,int e)
+{
+    static int i=0;
+    if (s>e)
+    return NULL;
+
+    node *root=new node(pre[i]);
+
+    int index=-1;
+
+    for (int j=s;j<=e;j++)
+    {
+        if (in[j]==pre[i])
+        {
+            index=j;
+            break;
+        }
+    }
+    i++;
+
+    root->left=buildTreefromPreIn(in,pre,s,index-1);
+    root->right=buildTreefromPreIn(in,pre,index+1,e);
+
+    return root;
+}
+
 int main()
 {
-    node *root=buildTree();
+    //node *root=buildTree();
 
     //printAllLevel(root);
-    bfs(root);
+    //bfs(root);
     //cout<<NoofNode(root)<<endl;
     //cout<<SumofNode(root);
     //cout<<DiameterRec(root)<<endl;
-    Pair p=fastDiameter(root);
+    /*Pair p=fastDiameter(root);
     cout<<p.diameter<<endl;
-    cout<<p.height<<endl;
+    cout<<p.height<<endl;*/
+
+    /*int arr[]={1,2,3,4,5,6,7};
+    int n=7;
+
+    node * root=BuildTreeFromArray(arr,0,n-1);
+
+    bfs(root);*/
+
+    int in[]={3,2,8,4,1,6,7,5};
+    int pre[]={1,2,3,4,8,5,6,7};
+    int n=sizeof(in)/sizeof(int);
+
+    node *root=buildTreefromPreIn(in,pre,0,n-1);
+
+    bfs(root);
 
     return 0;
 }
