@@ -190,6 +190,23 @@ Pair fastDiameter(node *root)
     return p;
 }
 
+int replaceSum(node *root)
+{
+    if (root==NULL)
+    return 0;
+
+    if (root->right==NULL && root->right==NULL)
+    return root->data;
+
+    int leftSum=replaceSum(root->left);
+    int rightSum=replaceSum(root->right);
+
+    int temp=root->data;
+    root->data=leftSum+rightSum;
+
+    return temp + root->data;
+}
+
 int main()
 {
     node *root=buildTree();
