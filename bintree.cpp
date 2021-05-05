@@ -167,6 +167,28 @@ int DiameterRec(node *root)
     return max(op1,max(op2,op3));
 
 }
+class Pair
+{
+    public:
+    int height;
+    int diameter;
+};
+Pair fastDiameter(node *root)
+{
+    Pair p;
+    if(root==NULL)
+    {
+        p.diameter=p.height=0;
+        return p;
+    }
+    Pair left=fastDiameter(root->left);
+    Pair right=fastDiameter(root->right);
+
+    p.height=max(left.height,right.height)+1;
+    p.diameter=max(left.height+right.height,max(left.diameter,right.diameter));
+
+    return p;
+}
 
 int main()
 {
@@ -176,7 +198,10 @@ int main()
     bfs(root);
     //cout<<NoofNode(root)<<endl;
     //cout<<SumofNode(root);
-    cout<<DiameterRec(root)<<endl;
+    //cout<<DiameterRec(root)<<endl;
+    Pair p=fastDiameter(root);
+    cout<<p.diameter<<endl;
+    cout<<p.height<<endl;
 
     return 0;
 }
