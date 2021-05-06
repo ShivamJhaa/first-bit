@@ -98,6 +98,72 @@ void inorder(node *root)
     inorder(root->right);
 }
 
+bool Search(node *root,int data)
+{
+    if (root==NULL)
+    return false;
+
+    if (root->data==data)
+    return true;
+
+    //Recursive case
+
+    if (data<root->data)
+    return Search(root->left,data);
+    else 
+    return Search(root->right,data);
+}
+
+node * deleteInBST(node *root,int data){
+    if (root==NULL)
+    return NULL;
+
+    else if (data<root->data){
+    root->left= deleteInBST(root->left,data);
+    return root;
+    }
+
+    else if (data==root->data)
+    {
+        //We have 3 cases here
+        //1. If the node doesn't have any chlidren-Leaf Node
+        if (root->left==NULL && root->right==NULL)
+        {
+            delete root;
+            return NULL;
+        }
+
+        //2. If the node have only 1 children
+        if (root->left!=NULL && root->right==NULL)
+        {
+            node *temp=root->left;
+            delete root;
+            return temp;
+        }
+        if (root->right!=NULL && root->left==NULL)
+        {
+            node *temp=root->right;
+            delete root;
+            return temp;
+        }
+
+        //3. If the node have 2 children
+        node *replace=root->right;
+        while(replace->left!=NULL)
+        {
+            replace=replace->left;
+        }
+        root->data=replace->data;
+        root->right=deleteInBST(root->right,replace->data);
+        return root;
+
+    }
+    else {
+        root->right=deleteInBST(root->right,data);
+        return root;
+    }
+}
+
 int main()
 {
     node *root=build();
@@ -105,6 +171,18 @@ int main()
     cout<<endl;
 
     inorder(root);
+    cout<<endl;
+    int s;
+    cin>>s;
+    /*if (Search(root,s))
+    cout<<"DATA is PResent"<<"\n";
+    else 
+    cout<<"Not Present"<<"\n";*/
+    root=deleteInBST(root,s);
+    inorder(root);
+    cout<<endl;
+    bfs(root);
+    cout<<endl;
 
 
     return 0;
