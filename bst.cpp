@@ -164,6 +164,17 @@ node * deleteInBST(node *root,int data){
     }
 }
 
+bool IsBSt(node *root,int minV=INT32_MIN,int maxV=INT32_MAX)
+{
+    if (root==NULL)
+    return true;
+
+    if (root->data>=minV && root->data<=maxV && IsBSt(root->left,minV,root->data) && IsBSt(root->right,root->data,maxV))
+    return true;
+
+    return false;
+}
+
 int main()
 {
     node *root=build();
@@ -172,17 +183,22 @@ int main()
 
     inorder(root);
     cout<<endl;
-    int s;
-    cin>>s;
+    /*int s;
+    cin>>s;*/
     /*if (Search(root,s))
     cout<<"DATA is PResent"<<"\n";
     else 
     cout<<"Not Present"<<"\n";*/
-    root=deleteInBST(root,s);
+    /*root=deleteInBST(root,s);
     inorder(root);
     cout<<endl;
     bfs(root);
-    cout<<endl;
+    cout<<endl;*/
+
+    if (IsBSt(root))
+    cout<<"yes"<<endl;
+    else 
+    cout<<"No"<<endl;
 
 
     return 0;
