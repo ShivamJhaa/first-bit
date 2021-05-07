@@ -35,13 +35,19 @@ class Graph{
         }
     }
 
-    void bfs(T src)
+    void bfsdist(T src)
     {
-        map<T,bool>visited;
+        map<T,int>dist;
         queue<T>q;
+        map<T,T>parent;
+
+        for (auto i:adjList){
+            dist[i.first]=INT32_MAX;
+        }
 
         q.push(src);
-        visited[src]=true;
+        dist[src]=0;
+        parent[src]=src;
 
         while(!q.empty())
         {
@@ -51,12 +57,22 @@ class Graph{
 
             for (auto neighbour:adjList[node])
             {
-                if (!visited[neighbour])
+                if (dist[neighbour]==INT32_MAX)
                 {
                     q.push(neighbour);
-                    visited[neighbour]=true;
+                   dist[neighbour]=dist[node]+1;
+                   parent[neighbour]=node;
                 }
             }
+        }
+
+        //Printing the distance
+
+        for (auto i:adjList)
+        {
+            T node = i.first;
+
+            cout<<"Distance of "<<node<<" from "<<src<<" is "<<dist[node]<<endl;
         }
     }
 
@@ -64,7 +80,7 @@ class Graph{
 
 int main()
 {
-    Graph<string> g;
+    /*Graph<string> g;
     g.addEdge("Puitn","Trump",false);
     g.addEdge("Puitn","Modi",false);
     g.addEdge("Puitn","Pope",false);
@@ -74,7 +90,18 @@ int main()
     g.addEdge("Prabhu","Modi",false);
 
     //g.Print();
-    g.bfs("Puitn");
+    g.bfs("Puitn");*/
+
+    Graph<int>g;
+    g.addEdge(0,1);
+    g.addEdge(1,2);
+    g.addEdge(0,4);
+    g.addEdge(2,4);
+    g.addEdge(2,3);
+    g.addEdge(3,5);
+    g.addEdge(3,4);
+
+    g.bfsdist(0);
 
     return 0;
 }
