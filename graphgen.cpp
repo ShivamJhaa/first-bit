@@ -76,32 +76,69 @@ class Graph{
         }
     }
 
+    //dfs
+
+ void dfsHelper(T src,map<T,bool>&visited)
+    {
+        //whenever come to a node mark it visited
+        visited[src]=true;
+        cout<<src<<" ";
+        //try to find out whether the next node is visted or not
+
+        for(T neighbour:adjList[src])
+        {
+            if (!visited[neighbour])
+            {
+                dfsHelper(neighbour,visited);
+            }
+        }
+    }
+
+    void dfs(T src)
+    {
+        int component=1;
+        map<T,bool>visited;
+        dfsHelper(src,visited);
+        cout<<endl;
+
+        for (auto i:adjList)
+        {
+            T city =i.first;
+            if (!visited[city])
+            {
+                dfsHelper(city,visited);
+                component++;
+            }
+        }
+        cout<<endl;
+        cout<<"The no of components in this graph= "<<component<<endl;
+    }
 };
 
 int main()
 {
-    /*Graph<string> g;
-    g.addEdge("Puitn","Trump",false);
-    g.addEdge("Puitn","Modi",false);
-    g.addEdge("Puitn","Pope",false);
-    g.addEdge("Modi","Trump",true);
-    g.addEdge("Modi","Yogi",true);
-    g.addEdge("Yogi","Prabhu",false);
-    g.addEdge("Prabhu","Modi",false);
 
-    //g.Print();
-    g.bfs("Puitn");*/
+    /*Graph<int>g;
 
-    Graph<int>g;
     g.addEdge(0,1);
-    g.addEdge(1,2);
     g.addEdge(0,4);
-    g.addEdge(2,4);
+    g.addEdge(4,3);
+    g.addEdge(1,4);
+    g.addEdge(1,2);
     g.addEdge(2,3);
-    g.addEdge(3,5);
-    g.addEdge(3,4);
 
-    g.bfsdist(0);
+    g.dfs(0);*/
+    Graph<string>g1;
+    g1.addEdge("A","J");
+    g1.addEdge("Am","D");
+    g1.addEdge("D","J");
+    g1.addEdge("M","J");
+    g1.addEdge("M","B");
+    g1.addEdge("A","J");
+    g1.addEdge("D","B");
+    g1.addEdge("X","Y");
+    g1.dfs("A");
+    
 
     return 0;
 }
